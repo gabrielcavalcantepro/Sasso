@@ -106,6 +106,29 @@
     });
   });
 
+  /* ---------- Depoimentos: o player do YouTube só carrega no clique ---------- */
+  var activeVideo = null;
+
+  document.querySelectorAll('.video__btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      // fecha o vídeo que estiver tocando, devolvendo a capa
+      if (activeVideo) {
+        activeVideo.card.replaceChild(activeVideo.btn, activeVideo.iframe);
+      }
+
+      var iframe = document.createElement('iframe');
+      iframe.src = 'https://www.youtube-nocookie.com/embed/' + btn.dataset.video + '?autoplay=1&rel=0&playsinline=1';
+      iframe.title = btn.getAttribute('aria-label');
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      iframe.allowFullscreen = true;
+
+      var card = btn.parentElement;
+      card.replaceChild(iframe, btn);
+      iframe.focus();
+      activeVideo = { card: card, btn: btn, iframe: iframe };
+    });
+  });
+
   /* ---------- Formulário → WhatsApp ---------- */
   var form = document.getElementById('form');
   var phoneInput = document.getElementById('f-whats');
